@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Registration</title>
+    <meta property="og:title" content="Register" />
+
+    <style data-tag="reset-style-sheet">
+      html {  line-height: 1.15;}body {  margin: 0;}* {  box-sizing: border-box;  border-width: 0;  border-style: solid;}p,li,ul,pre,div,h1,h2,h3,h4,h5,h6,figure,blockquote,figcaption {  margin: 0;  padding: 0;}button {  background-color: transparent;}button,input,optgroup,select,textarea {  font-family: inherit;  font-size: 100%;  line-height: 1.15;  margin: 0;}button,select {  text-transform: none;}button,[type="button"],[type="reset"],[type="submit"] {  -webkit-appearance: button;}button::-moz-focus-inner,[type="button"]::-moz-focus-inner,[type="reset"]::-moz-focus-inner,[type="submit"]::-moz-focus-inner {  border-style: none;  padding: 0;}button:-moz-focus,[type="button"]:-moz-focus,[type="reset"]:-moz-focus,[type="submit"]:-moz-focus {  outline: 1px dotted ButtonText;}a {  color: inherit;  text-decoration: inherit;}input {  padding: 2px 4px;}img {  display: block;}html { scroll-behavior: smooth  }
+    </style>
+    <style data-tag="default-style-sheet">
+      html {
+        font-family: Titillium Web;
+        font-size: 16px;
+      }
+
+      body {
+        font-weight: 400;
+        font-style:normal;
+        text-decoration: none;
+        text-transform: none;
+        letter-spacing: normal;
+        line-height: 1.15;
+        color: var(--dl-color-scheme-green100);
+        background-color: var(--dl-color-scheme-yellow20);
+
+      }
+    </style>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Lexend:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
+      data-tag="font"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
+      data-tag="font"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&amp;display=swap"
+      data-tag="font"
+    />
+    <!--This is the head section-->
+    <!-- <script type="text/javascript"> ... </script> -->
+    <link rel="stylesheet" href="/static/assets/css/style.css" />
+  </head>
+  <body>
+    <div>
+      <link href="/static/assets/css/register.css" rel="stylesheet" />
+
+      <div class="register-container">
+        <div class="register-container1">
+          <div class="navbar-container">
+            <div class="max-width">
+              <div class="register-logo">
+                <span class="brand-Name">
+                  <span class="register-text01">Arrhythmia</span>
+                  <span class="register-text04">Classifier</span>
+                  <br />
+                </span>
+              </div>
+              <div class="register-links">
+                <a href="index.html" class="register-text04 navbar-Link">Dashboard</a>
+                <a href="register.html" class="button-secondary button">Register</a>
+                <a href="login.html" class="button button-primary">Login</a>
+              </div>
+              <div class="register-burger-menu navbar-burger-menu">
+                <svg viewBox="0 0 1024 1024" class="register-icon">
+                  <path
+                    d="M128 256h768v86h-768v-86zM128 554v-84h768v84h-768zM128 768v-86h768v86h-768z"
+                  ></path>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="register-hero hero-container section-container">
+            <div class="register-max-width1 max-width">
+              <div class="register-content">
+                <h1 class="register-title">
+                  <span>Register</span>
+                  <br />
+                </h1>
+                <form class="register-form" method="post" action="">
+                  {{ form.hidden_tag() }}
+                  <p class="register-text01">
+                    {% if msg %}
+                        {{ msg | safe }}
+                    {% else %}
+                        Add your credentials
+                    {% endif %}                                  
+                </p>
+                <div class="register-textinput input">
+                  {{ form.username(class="form-control") }}
+                </div>
+                <div class="register-textinput1 input">
+                  {{ form.email(class="form-control") }}
+                </div>
+                <div class="register-textinput2 input">
+                  {{ form.password(class="form-control", type="password") }}
+                </div>
+                  <span class="register-text07">Username</span>
+                  <span class="register-text08">Email</span>
+                  <span class="register-text09">Password</span>
+                <div class="register-container2">
+                  <button class="register-button2 button button-gradient" type="submit">
+                    Register
+                  </button>
+                </div>
+              </div>
+            </form>
+              <div class="register-image">
+                <img
+                  alt="image"
+                  src="public/playground_assets/wallpaperflare-cropped-600h.jpg"
+                  class="register-hero-image"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      window.onload = () => {
+        const runAllScripts = () => {
+          initializeAllAccordions()
+        }
+
+        const listenForUrlChanges = () => {
+          let url = location.href
+          document.body.addEventListener(
+            'click',
+            () => {
+              requestAnimationFrame(() => {
+                if (url !== location.href) {
+                  runAllScripts()
+                  url = location.href
+                }
+              })
+            },
+            true
+          )
+        }
+
+        const initializeAllAccordions = () => {
+          const allAccordions = document.querySelectorAll('[data-role="Accordion"]');
+
+          allAccordions.forEach((accordion) => {
+            const accordionHeader = accordion.querySelector('[data-type="accordion-header"]')
+            const accordionContent = accordion.querySelector('[data-type="accordion-content"]')
+
+            accordionHeader.addEventListener('click', () => {
+              if (accordionContent.style.maxHeight) {
+                accordionContent.style.maxHeight = ''
+              } else {
+                accordionContent.style.maxHeight = `${accordionContent.scrollHeight}px`
+              }
+            })
+          })
+        }
+
+        listenForUrlChanges()
+        runAllScripts()
+      }
+    </script>
+  </body>
+</html>
