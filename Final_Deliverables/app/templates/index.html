@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="/static/assets/css/scripts.js"></script>
+    <title>Arrhythmia Classifier</title>
+    <meta property="og:title" content="Arrhythmia Classifier" />
+
+    <style data-tag="reset-style-sheet">
+      html {  line-height: 1.15;}body {  margin: 0;}* {  box-sizing: border-box;  border-width: 0;  border-style: solid;}p,li,ul,pre,div,h1,h2,h3,h4,h5,h6,figure,blockquote,figcaption {  margin: 0;  padding: 0;}button {  background-color: transparent;}button,input,optgroup,select,textarea {  font-family: inherit;  font-size: 100%;  line-height: 1.15;  margin: 0;}button,select {  text-transform: none;}button,[type="button"],[type="reset"],[type="submit"] {  -webkit-appearance: button;}button::-moz-focus-inner,[type="button"]::-moz-focus-inner,[type="reset"]::-moz-focus-inner,[type="submit"]::-moz-focus-inner {  border-style: none;  padding: 0;}button:-moz-focus,[type="button"]:-moz-focus,[type="reset"]:-moz-focus,[type="submit"]:-moz-focus {  outline: 1px dotted ButtonText;}a {  color: inherit;  text-decoration: inherit;}input {  padding: 2px 4px;}img {  display: block;}html { scroll-behavior: smooth  }
+    </style>
+    <style data-tag="default-style-sheet">
+      html {
+        font-family: Titillium Web;
+        font-size: 16px;
+      }
+
+      body {
+        font-weight: 400;
+        font-style:normal;
+        text-decoration: none;
+        text-transform: none;
+        letter-spacing: normal;
+        line-height: 1.15;
+        color: var(--dl-color-scheme-green100);
+        background-color: var(--dl-color-scheme-yellow20);
+
+      }
+    </style>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Lexend:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
+      data-tag="font"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
+      data-tag="font"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&amp;display=swap"
+      data-tag="font"
+    />
+    <!--This is the head section-->
+    <!-- <script type="text/javascript"> ... </script> -->
+    <link rel="stylesheet" type="text/css" href="/static/assets/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="/static/assets/css/home.css" />
+  </head>
+  <body>
+    <div>
+      <div class="home-container">
+        <div class="navbar-container">
+          <div class="max-width">
+            <div class="home-logo">
+              <span class="brand-Name">
+                <span class="home-text1">Arrhythmia</span>
+                <span class="home-text4">Classifier</span>
+                <br />
+              </span>
+            </div>
+            <div class="home-links">
+              {% if current_user.is_authenticated %}
+              <a
+              href="index.html"
+              class="home-text4 navbar-Link"
+            >
+              Dashboard
+            </a>
+                {% endif %}
+                {% if current_user.is_authenticated %} 
+
+                <a href="/logout"   type="button" class="button button-primary">Logout</a>
+
+            {% else %}
+
+            <a href="/register" class="button-secondary button">Register</a>
+            <!-- <button class="button-secondary button">Register</button> -->
+            <a href="/login" class="button button-primary">Login</a>
+            <!-- <button class="button button-primary">Login</button> -->
+            {% endif %}
+              
+            </div>
+            <div class="home-burger-menu navbar-burger-menu">
+              <svg viewBox="0 0 1024 1024" class="home-icon">
+                <path
+                  d="M128 256h768v86h-768v-86zM128 554v-84h768v84h-768zM128 768v-86h768v86h-768z"
+                ></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div class="home-hero hero-container section-container">
+          <div class="home-max-width1 max-width">
+            <div class="home-content">
+              <h1 class="home-title">
+                <span>Arrhythmia Classifier</span>
+                <br />
+              </h1>
+              <span class="home-description">
+                <span>Upload&nbsp; the ECG Image below</span>
+                <br />
+              </span>
+              <form action="{{ url_for('classify') }}" method="POST" enctype="multipart/form-data">
+                <span>
+                  <input type="file" name="fileupload" onchange="display(event)">
+                  <div id="input_image_container"><img src="#" id="input_image" style="top:5vh;"></div>
+                </span>
+                <div class="home-container1">
+                  <button class="home-button2 button button-gradient" type="submit">
+                    Classify
+                  </button>
+                </div>
+              </form>
+              <span class="home-description">
+                <span>{{ result }}</span>
+                <br />
+              </span>
+            </div>
+            <div class="home-image">
+              <img
+                alt="image"
+                src="{{ url_for('static', filename='wallpaperflare-cropped-600h.jpg') }}"
+                class="home-hero-image"
+              />
+            </div>
+          </div>
+        </div>
+        {% if current_user.is_authenticated %}
+        <!-- {{history}} -->
+        <table style="margin-left: 20px;">
+        <!-- Table headers -->
+        <th>
+            <tr style="color: green; ">    
+            <td>Classifications</td>
+            <td>Results</td>
+            </tr>
+        </th>
+
+        <!-- For loop logic of jinja template -->
+          {% set count=0 %}
+        
+          {% if history|length == 0 %}
+            <h3 class="home-title">No Past Classifications</h3>
+
+          {% else %}
+            {% for ele in history %}
+              <!-- table rows -->
+              {% set count = count + 1 %}
+              <tr>
+                  <td>{{count}}</td>
+                  <td>{{ele}}</td>
+              </tr>
+            {%endfor%}
+
+        {% endif %}
+        </table>
+      {% endif %}
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>
+    <script>
+      window.onload = () => {
+        const runAllScripts = () => {
+          initializeAllAccordions()
+        }
+
+        const listenForUrlChanges = () => {
+          let url = location.href
+          document.body.addEventListener(
+            'click',
+            () => {
+              requestAnimationFrame(() => {
+                if (url !== location.href) {
+                  runAllScripts()
+                  url = location.href
+                }
+              })
+            },
+            true
+          )
+        }
+
+        const initializeAllAccordions = () => {
+          const allAccordions = document.querySelectorAll('[data-role="Accordion"]');
+
+          allAccordions.forEach((accordion) => {
+            const accordionHeader = accordion.querySelector('[data-type="accordion-header"]')
+            const accordionContent = accordion.querySelector('[data-type="accordion-content"]')
+
+            accordionHeader.addEventListener('click', () => {
+              if (accordionContent.style.maxHeight) {
+                accordionContent.style.maxHeight = ''
+              } else {
+                accordionContent.style.maxHeight = `${accordionContent.scrollHeight}px`
+              }
+            })
+          })
+        }
+
+        listenForUrlChanges()
+        runAllScripts()
+      }
+    </script>
+  </body>
+</html>
